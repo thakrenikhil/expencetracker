@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "624062053808",
+    "project_id": "expense-tracker-d64ee",
+    "storage_bucket": "expense-tracker-d64ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:624062053808:android:f1ef9cb72160b8ba8caa75",
+        "android_client_info": {
+          "package_name": "com.example.expencetracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqCjUVVOlTUFtVL6IZ7QXV2BQ4CA6zcLk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

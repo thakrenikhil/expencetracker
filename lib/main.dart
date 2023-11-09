@@ -1,5 +1,10 @@
+import 'package:expencetracker/Screen/expenses.dart';
+import 'package:expencetracker/Screen/loginScreen.dart';
+import 'package:expencetracker/Screen/splashscreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'expenses.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 var kColorScheme = ColorScheme.fromSeed(
   seedColor: const Color.fromARGB(255, 57, 184, 159),
@@ -7,10 +12,14 @@ var kColorScheme = ColorScheme.fromSeed(
 
 var kDarkColorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,
-  seedColor: const Color.fromARGB(255, 5, 99, 125),
+  seedColor: const Color.fromARGB(255, 255, 255, 255),
 );
+final nameProvider = StateProvider((ref) => '');
+final emailProvider = StateProvider((ref) => '');
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
      MaterialApp(debugShowCheckedModeBanner: false,
       darkTheme: ThemeData().copyWith(useMaterial3:true,
@@ -29,12 +38,17 @@ void main() {
           ),
         ),
         textTheme: ThemeData().textTheme.copyWith(
-          titleLarge: TextStyle(
+          titleSmall: TextStyle(fontFamily: 'outfit',
+            fontWeight: FontWeight.normal,
+            color: kDarkColorScheme.onSecondaryContainer,
+            fontSize: 14,
+          ),
+          titleLarge: TextStyle(fontFamily: 'outfit',
             fontWeight: FontWeight.bold,
             color: kDarkColorScheme.onSecondaryContainer,
             fontSize: 18,
           ),
-          bodyMedium: TextStyle(
+          bodyMedium: TextStyle(fontFamily: 'outfit',
             fontWeight: FontWeight.w500,
             color: kDarkColorScheme.onSecondaryContainer,
             fontSize: 16,
@@ -44,10 +58,6 @@ void main() {
        theme: ThemeData().copyWith(
          useMaterial3: true,
          colorScheme: kColorScheme,
-         appBarTheme: const AppBarTheme().copyWith(
-           backgroundColor: kColorScheme.onPrimaryContainer,
-           foregroundColor: kColorScheme.primaryContainer,
-         ),
          cardTheme: const CardTheme().copyWith(
            color: kColorScheme.secondaryContainer,
            margin: const EdgeInsets.symmetric(
@@ -61,13 +71,27 @@ void main() {
            ),
          ),
          textTheme: ThemeData().textTheme.copyWith(
-           titleLarge: TextStyle(
+           titleLarge: TextStyle(fontFamily: 'outfit',
              fontWeight: FontWeight.bold,
              color: kColorScheme.onSecondaryContainer,
              fontSize: 16,
            ),
          ),),
-      home: const Expenses(),
+      home:ProviderScope(
+        child: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context,snapshot){
+            if(snapshot.hasData){
+              return Expenses();
+            }else{
+            return  AuthScreen();
+
+            }
+          },
+        ),
+      )
+
+      //SplashScreen()
     ),
   );
 }
