@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../Modals/expense.dart';
 import 'package:http/http.dart' as http;
+
+import '../categories.dart';
 class NewExpence extends StatefulWidget {
   const NewExpence({super.key, required this.onAddExpense});
   final void Function(Expense expense) onAddExpense;
@@ -14,6 +16,7 @@ class NewExpence extends StatefulWidget {
 
 class _NewExpenceState extends State<NewExpence> {
   final _formKey = GlobalKey<FormState>();
+  var _selectedCategory = categories[Category.work]!;
   get formattedDate{
     return formatter.format(_selecteddate!);
   }
@@ -35,7 +38,7 @@ class _NewExpenceState extends State<NewExpence> {
     });
   }
 
-  Category _selectedcategory = Category.leisure;
+  Categories _selectedcategory = categories[Category.work]!;
   void _submitexpensedata() async {
     final enteredAmount = double.tryParse(_amountcontroller.text);
     final amountisInvalid = enteredAmount == null || enteredAmount <= 0;
@@ -65,7 +68,7 @@ class _NewExpenceState extends State<NewExpence> {
         body: json.encode({
           'title': _expencecontroller.text,
           'amount': enteredAmount,
-          'category': _selectedcategory.toString(),
+          'category': _selectedcategory.title,
           'date': formattedDate,
         }));
     final Map<String, dynamic> resData = json.decode(response.body);
@@ -73,10 +76,11 @@ class _NewExpenceState extends State<NewExpence> {
       return;
     }
     widget.onAddExpense(Expense(
+        id: resData['name'],
         amount: enteredAmount,
         date: _selecteddate!,
         title: _expencecontroller.text,
-        category: _selectedcategory));
+        category: _selectedCategory));
     Navigator.pop(context);
   }
 
@@ -123,24 +127,23 @@ class _NewExpenceState extends State<NewExpence> {
                 const SizedBox(
                   width: 16,
                 ),
-                Expanded(
-                    child: InkWell(
+                InkWell(
                   onTap: _DatePicker,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(_selecteddate == null
-                          ? 'Select Date'
-                          : formatter.format(_selecteddate!)),
-                      const SizedBox(width: 10),
-                      const Icon(
-                        Icons.date_range_outlined,
-                        color: Colors.white,
-                      ),
-                    ],
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(_selecteddate == null
+                      ? 'Select Date'
+                      : formatter.format(_selecteddate!)),
+                  const SizedBox(width: 10),
+                  const Icon(
+                    Icons.date_range_outlined,
+                    color: Colors.white,
                   ),
-                )),
+                ],
+                  ),
+                ),
               ],
             ),
             const SizedBox(
@@ -148,29 +151,52 @@ class _NewExpenceState extends State<NewExpence> {
             ),
             Row(
               children: [
-                DropdownButton(
-                    style: const TextStyle(
-                        color: Colors.white, fontFamily: 'outfit'),
-                    value: _selectedcategory,
-                    items: Category.values
-                        .map((category) => DropdownMenuItem(
-                            value: category,
-                            child: Text(
-                              category.name.toUpperCase(),
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  backgroundColor: Colors.black45,
-                                  fontFamily: 'outfit'),
-                            )))
-                        .toList(),
-                    onChanged: (value) {
-                      if (value == null) {
-                        return;
-                      }
-                      setState(() {
-                        _selectedcategory = value;
-                      });
-                    }),
+                Expanded(
+                  child: DropdownButtonFormField(
+                      style: const TextStyle(
+                          color: Colors.white, fontFamily: 'outfit'),
+                      value: _selectedcategory,
+                      items:
+                      [
+                        for (final category in categories.entries)
+                          DropdownMenuItem(
+                            value: category.value,
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 16,
+                                  width: 16,
+                                  //color: category.value.icon,
+                                  child: category.value.icon,
+                                ),
+                                const SizedBox(
+                                  width: 6,
+                                ),
+                                Text(category.value.title,style: TextStyle(color: Colors.cyanAccent),)
+                              ],
+                            ),
+                          ),
+                      ],
+                      //Category.values,
+                          // .map((category) => DropdownMenuItem(
+                          //     value: category,
+                          //     child: Text(
+                          //       category.name.toUpperCase(),
+                          //       style: const TextStyle(
+                          //           color: Colors.white,
+                          //           backgroundColor: Colors.black45,
+                          //           fontFamily: 'outfit'),
+                          //     )))
+                          // .toList(),
+                      onChanged: (value) {
+                        if (value == null) {
+                          return;
+                        }
+                        setState(() {
+                          _selectedcategory = value;
+                        });
+                      }),
+                ),
                 const Spacer(),
                 OutlinedButton(
                     onPressed: _submitexpensedata, child: const Text('Save'))

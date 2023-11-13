@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:expencetracker/Widgets/expences_list.dart';
 import 'package:expencetracker/Screen/new_item.dart';
 import 'package:expencetracker/Screen/portfolio.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../Widgets/chart/chart.dart';
 import '../Widgets/drawer.dart';
 import '../Modals/expense.dart';
+import 'package:http/http.dart' as http;
+import '../categories.dart';
 
 class Expenses extends StatefulWidget {
   const Expenses({super.key});
@@ -14,13 +19,13 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpensesState extends State<Expenses> {
-  final List<Expense> _registeredexpences = [
-    Expense(
-      title: "ExpenseTracker app",
-      amount: 99,
-      date: DateTime.now(),
-      category: Category.work,
-    ),
+   List<Expense> _registeredexpences = [
+    // Expense(
+    //   title: "ExpenseTracker app",
+    //   amount: 99,
+    //   date: DateTime.now(),
+    //   category: _registeredexpences[],
+    // ),
   ];
   void _openAddExpenceOverlay() {
     showModalBottomSheet(useSafeArea: true,
@@ -37,6 +42,7 @@ class _ExpensesState extends State<Expenses> {
     setState(() {
       _registeredexpences.add(expense);
     });
+
   }
 
   void _portfolio() {
@@ -65,6 +71,55 @@ class _ExpensesState extends State<Expenses> {
         },
       ),
     ));
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadItem();
+  }
+
+
+  var isLoading = true;
+  void loadItem() async {
+    final url =
+    Uri.https('expense-tracker-d64ee-default-rtdb.firebaseio.com', 'expense-tracker.json');
+    final reponse = await http.get(url);
+    if (reponse.body == 'null') {
+      setState(() {
+        isLoading = false;
+      });
+      return;
+    }
+    final Map<String, dynamic> listData = json.decode(reponse.body);
+     List<Expense> loadedlist = [];
+    for (final item in listData.entries) {
+      final category = categories.entries
+          .firstWhere(
+              (catItem) => catItem.value.title == item.value['category'])
+          .value;
+      final String dateString = item.value['date'];
+      final DateFormat format = DateFormat('MM/dd/yyyy');
+      DateTime date;
+      try {
+        date = format.parse(dateString);
+      } catch (e) {
+        // Handle the case where the date string is not in the expected format
+        print('Invalid date format: $dateString');
+        continue; // Skip this entry and move to the next one
+      }
+      loadedlist.add(Expense(
+          id: item.key,
+          title: item.value['title'],
+          amount: item.value['amount'],
+          category: category,
+          date: date));
+    }
+    setState(() {
+      _registeredexpences = loadedlist;
+      isLoading = false;
+    });
   }
 
   @override
