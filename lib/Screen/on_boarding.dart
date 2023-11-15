@@ -1,4 +1,3 @@
-import 'package:expencetracker/Screen/expenses.dart';
 import 'package:expencetracker/Screen/loginScreen.dart';
 import 'package:flutter/material.dart';
 

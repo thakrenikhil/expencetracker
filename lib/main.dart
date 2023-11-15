@@ -1,6 +1,5 @@
 import 'package:expencetracker/Screen/expenses.dart';
 import 'package:expencetracker/Screen/loginScreen.dart';
-import 'package:expencetracker/Screen/splashscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -82,9 +81,9 @@ void main() async{
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context,snapshot){
             if(snapshot.hasData){
-              return Expenses();
+              return const Expenses();
             }else{
-            return  AuthScreen();
+            return  const AuthScreen();
 
             }
           },
