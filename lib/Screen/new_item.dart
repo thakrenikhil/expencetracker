@@ -15,8 +15,9 @@ class NewExpence extends StatefulWidget {
 }
 
 class _NewExpenceState extends State<NewExpence> {
+  var _isSending = false;
   final _formKey = GlobalKey<FormState>();
-  var _selectedCategory = categories[Category.work]!;
+  final _selectedCategory = categories[Category.work]!;
   get formattedDate{
     return formatter.format(_selecteddate!);
   }
@@ -40,6 +41,9 @@ class _NewExpenceState extends State<NewExpence> {
 
   Categories _selectedcategory = categories[Category.work]!;
   void _submitexpensedata() async {
+    setState(() {
+      _isSending = true;
+    });
     final enteredAmount = double.tryParse(_amountcontroller.text);
     final amountisInvalid = enteredAmount == null || enteredAmount <= 0;
     if (_expencecontroller.text.trim().isEmpty ||
@@ -68,20 +72,22 @@ class _NewExpenceState extends State<NewExpence> {
         body: json.encode({
           'title': _expencecontroller.text,
           'amount': enteredAmount,
-          'category': _selectedcategory.title,
+          'category': _selectedcategory.caption,
           'date': formattedDate,
+          'comment': _commentcontroller.text,
         }));
     final Map<String, dynamic> resData = json.decode(response.body);
     if (!context.mounted) {
       return;
     }
     widget.onAddExpense(Expense(
-        id: resData['name'],
+        id: resData['title'],
         amount: enteredAmount,
         date: _selecteddate!,
         title: _expencecontroller.text,
-        category: _selectedCategory));
-    Navigator.pop(context);
+        category: _selectedCategory,
+    comment: _commentcontroller.text));
+     Navigator.pop(context);
   }
 
   @override
@@ -102,8 +108,13 @@ class _NewExpenceState extends State<NewExpence> {
             TextFormField(
               style: const TextStyle(color: Colors.white, fontFamily: 'outfit'),
               controller: _expencecontroller,
+              textCapitalization: TextCapitalization.characters,
               maxLength: 20,
               decoration: const InputDecoration(label: Text('Expence Name')),
+              // onSaved: (value){
+              //   _enteredName = value!;
+              //
+              // },
             ),
             Row(
               children: [
@@ -172,22 +183,11 @@ class _NewExpenceState extends State<NewExpence> {
                                 const SizedBox(
                                   width: 6,
                                 ),
-                                Text(category.value.title,style: TextStyle(color: Colors.cyanAccent),)
+                                Text(category.value.caption,style: const TextStyle(color: Colors.cyanAccent),)
                               ],
                             ),
                           ),
                       ],
-                      //Category.values,
-                          // .map((category) => DropdownMenuItem(
-                          //     value: category,
-                          //     child: Text(
-                          //       category.name.toUpperCase(),
-                          //       style: const TextStyle(
-                          //           color: Colors.white,
-                          //           backgroundColor: Colors.black45,
-                          //           fontFamily: 'outfit'),
-                          //     )))
-                          // .toList(),
                       onChanged: (value) {
                         if (value == null) {
                           return;
@@ -199,7 +199,15 @@ class _NewExpenceState extends State<NewExpence> {
                 ),
                 const Spacer(),
                 OutlinedButton(
-                    onPressed: _submitexpensedata, child: const Text('Save'))
+                    onPressed:_isSending ? null: _submitexpensedata, child: _isSending
+                    ? const SizedBox(
+                  height: 16,
+                  width: 16,
+                  child: CircularProgressIndicator(
+                      color: Colors.orangeAccent,
+                      backgroundColor: Colors.white),
+                )
+                    : const Text('Save'))
               ],
             ),const Divider(color: Colors.cyan,height: 20),
             TextFormField(

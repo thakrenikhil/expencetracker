@@ -1,9 +1,9 @@
 import 'package:expencetracker/Functions/authfunction.dart';
-import 'package:expencetracker/Screen/expenses.dart';
 import 'package:expencetracker/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
 
 class AuthScreen extends ConsumerStatefulWidget {
   const AuthScreen({super.key});
@@ -56,7 +56,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                 ),
                 //Image.asset("assets/images/logo.png" ),
                 const SizedBox(
-                  height: 150,
+                  height: 100,
                 ),!islogin?
                 SizedBox(
                   height: 45,
@@ -258,6 +258,12 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                     ),
                   ),
                 ),
+                Lottie.asset(
+                  "assets/images/f.json",
+                  reverse: true,
+                  repeat: true,
+                  height: 190,
+                )
               ],
             ),
           ),

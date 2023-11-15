@@ -19,6 +19,7 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpensesState extends State<Expenses> {
+
    List<Expense> _registeredexpences = [
     // Expense(
     //   title: "ExpenseTracker app",
@@ -27,6 +28,7 @@ class _ExpensesState extends State<Expenses> {
     //   category: _registeredexpences[],
     // ),
   ];
+
   void _openAddExpenceOverlay() {
     showModalBottomSheet(useSafeArea: true,
         enableDrag: false,
@@ -53,11 +55,19 @@ class _ExpensesState extends State<Expenses> {
         ));
   }
 
-  void _removeExpence(Expense expense) {
+  void  _removeExpence(Expense expense) async {
     final expenseIndex = _registeredexpences.indexOf(expense);
+    final url =
+    Uri.https('expense-tracker-d64ee-default-rtdb.firebaseio.com', 'expense-tracker/${expense.id}.json');
+    final response = await http.delete(url);
     setState(() {
       _registeredexpences.remove(expense);
     });
+      if (response.statusCode >= 400) {
+        setState(() {
+          _registeredexpences.insert(expenseIndex, expense);
+        });
+      }
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: const Text('Expense Deleted'),
@@ -97,7 +107,7 @@ class _ExpensesState extends State<Expenses> {
     for (final item in listData.entries) {
       final category = categories.entries
           .firstWhere(
-              (catItem) => catItem.value.title == item.value['category'])
+              (catItem) => catItem.value.caption == item.value['category'])
           .value;
       final String dateString = item.value['date'];
       final DateFormat format = DateFormat('MM/dd/yyyy');
@@ -114,7 +124,8 @@ class _ExpensesState extends State<Expenses> {
           title: item.value['title'],
           amount: item.value['amount'],
           category: category,
-          date: date));
+          date: date,
+      comment: item.value['comment']));
     }
     setState(() {
       _registeredexpences = loadedlist;
@@ -127,11 +138,16 @@ class _ExpensesState extends State<Expenses> {
     Widget maincontent = const Center(
       child: Text('No expences found ,Try adding some!!'),
     );
-    if (_registeredexpences.isNotEmpty) {
-      maincontent = ExpencesList(
-          expenses: _registeredexpences, OnRemovedExpense: _removeExpence);
+    if (isLoading) {
+      maincontent = const Center(
+        child: CircularProgressIndicator(
+            color: Colors.orangeAccent, backgroundColor: Colors.white),
+      );
     }
-    return Scaffold(
+    if (_registeredexpences.isNotEmpty){
+      maincontent = ExpencesList(expenses: _registeredexpences, OnRemovedExpense: _removeExpence);
+    }
+    return Scaffold(backgroundColor: Colors.black,
       appBar: AppBar(backgroundColor: Colors.black,
           elevation:20,
           shape: const LinearBorder(),

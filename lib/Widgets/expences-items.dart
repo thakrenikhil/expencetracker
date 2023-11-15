@@ -1,11 +1,9 @@
-import 'dart:convert';
 
+import 'package:expencetracker/info.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../Modals/expense.dart';
-import 'package:http/http.dart' as http;
 
-import '../categories.dart';
 
 class ExpenceItem extends StatefulWidget {
   const ExpenceItem({super.key, required this.expense});
@@ -29,12 +27,14 @@ class _ExpenceItemState extends State<ExpenceItem> {
               Row(
                 children: [
                   Text(
-                    widget.expense.title,
+                    widget.expense.title!,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const Spacer(),
                   IconButton(
-                      onPressed: () {},
+                      onPressed:(){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const Info(),));
+                      },
                       icon: const FaIcon(
                         FontAwesomeIcons.circleInfo,
                         size: 22,
@@ -48,13 +48,13 @@ class _ExpenceItemState extends State<ExpenceItem> {
               Row(
                 children: [
                   Text(
-                    'Rs.${widget.expense.amount.toStringAsFixed(1)}',
+                    'Rs.${widget.expense.amount!.toStringAsFixed(1)}',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const Spacer(),
                   Row(
-                    children: [
-                      Icon(CategoryIcon[widget.expense.category]),
+                    children: [widget.expense.category?.icon?? Container(color: Colors.cyanAccent,),
+                    //  Icon(categories[widget.expense.category]!.icon as IconData?),
                       const SizedBox(
                         width: 16,
                       ),

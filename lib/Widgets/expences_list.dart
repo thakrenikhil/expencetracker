@@ -12,13 +12,17 @@ class ExpencesList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: expenses.length,
-      itemBuilder: (context, index) => Dismissible(
-          background:
-              Container(color: Colors.redAccent, child: const Icon(Icons.delete)),
+      itemBuilder: (ctx, index) => Dismissible(
+          direction: DismissDirection.startToEnd,
+          behavior: HitTestBehavior.translucent,
+          background: Container(
+              color: Colors.redAccent,
+              alignment: Alignment.centerLeft,
+              child: const Icon(Icons.delete)),
           onDismissed: (direction) {
             OnRemovedExpense(expenses[index]);
           },
-          key: ValueKey(expenses[index]),
+          key: ValueKey(expenses[index].id),
           child: ExpenceItem(expense: expenses[index])),
     );
   }

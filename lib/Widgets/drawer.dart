@@ -1,12 +1,9 @@
 import 'package:expencetracker/Screen/portfolio.dart';
 import 'package:expencetracker/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:expencetracker/Functions/authfunction.dart';
-import 'package:expencetracker/Screen/loginScreen.dart';
 
 
 class MainDrawer extends ConsumerWidget {
@@ -64,7 +61,7 @@ class MainDrawer extends ConsumerWidget {
                   .textTheme
                   .titleSmall!
                   .copyWith(color: Theme.of(context).colorScheme.onBackground),
-            ),onTap: (){},
+            ),onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => StatisticsScreen(),));},
           ),
           ListTile(
             leading: FaIcon(
@@ -78,7 +75,7 @@ class MainDrawer extends ConsumerWidget {
                   .textTheme
                   .titleSmall!
                   .copyWith(color: Theme.of(context).colorScheme.onBackground),
-            ),onTap: (){print(name);},
+            ),onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryScreen(),));},
           ),
           ListTile(
             leading: FaIcon(
@@ -92,7 +89,9 @@ class MainDrawer extends ConsumerWidget {
                   .textTheme
                   .titleSmall!
                   .copyWith(color: Theme.of(context).colorScheme.onBackground),
-            ),onTap: (){},
+            ),onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => LanguageSelectionScreen(),));
+          },
           ),
           ListTile(
             leading: Icon(
@@ -106,7 +105,7 @@ class MainDrawer extends ConsumerWidget {
                   .textTheme
                   .titleSmall!
                   .copyWith(color: Theme.of(context).colorScheme.onBackground),
-            ),onTap: (){},
+            ),onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen(),));},
           ),
           ListTile(
             leading: FaIcon(
@@ -120,7 +119,7 @@ class MainDrawer extends ConsumerWidget {
                   .textTheme
                   .titleSmall!
                   .copyWith(color: Theme.of(context).colorScheme.onBackground),
-            ),onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => Portfolio(),));},
+            ),onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const Portfolio(),));},
           ),
           ListTile(
             leading: const Icon(
@@ -137,7 +136,21 @@ class MainDrawer extends ConsumerWidget {
             ),onTap: ()async{
             await FirebaseAuth.instance.signOut();
           },
-          )
+          ),
+          ListTile(
+            leading: FaIcon(
+              FontAwesomeIcons.solidMessage,
+              size: 22,
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+            title: Text(
+              'Contact Me',
+              style: Theme.of(context)
+                  .textTheme
+                  .titleSmall!
+                  .copyWith(color: Theme.of(context).colorScheme.onBackground),
+            ),onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const Contactme(),));},
+          ),
         ],
       ),
     );

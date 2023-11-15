@@ -58,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen>
                       bgColor: Colors.purple,
                     ),],),
                 ),(route) => false));
-        }),SizedBox(height: 35),
+        }),const SizedBox(height: 35),
         const Text(
           "Expense Tracker",
           style: TextStyle(

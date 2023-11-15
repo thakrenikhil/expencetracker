@@ -1,4 +1,5 @@
 import 'package:expencetracker/Modals/expense.dart';
+import 'package:expencetracker/categories.dart';
 import 'package:flutter/material.dart';
 import 'chart_bar.dart';
 
@@ -9,10 +10,10 @@ class Chart extends StatelessWidget {
 
   List<ExpenseBucket> get buckets {
     return [
-      ExpenseBucket.forCategory(expenses, Category.food),
-      ExpenseBucket.forCategory(expenses, Category.leisure),
-      ExpenseBucket.forCategory(expenses, Category.travel),
-      ExpenseBucket.forCategory(expenses, Category.work),
+      ExpenseBucket.forCategory(expenses, categories[Category.food]!),
+      ExpenseBucket.forCategory(expenses, categories[Category.work]!),
+      ExpenseBucket.forCategory(expenses, categories[Category.travel]!),
+      ExpenseBucket.forCategory(expenses, categories[Category.leisure]!),
     ];
   }
 
@@ -31,15 +32,13 @@ class Chart extends StatelessWidget {
     double TotalExpense = 0;
 
     for (final expense in expenses) {
-      TotalExpense += expense.amount;
+      TotalExpense += expense.amount!;
     }
     return TotalExpense;
   }
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode =
-        MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Container(
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.symmetric(
@@ -54,7 +53,7 @@ class Chart extends StatelessWidget {
         gradient: LinearGradient(
           colors: [
             Theme.of(context).colorScheme.primary.withOpacity(0.5),
-            Theme.of(context).colorScheme.primary.withOpacity(0.2)
+            Theme.of(context).colorScheme.primary.withOpacity(0.5)
           ],
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
@@ -66,8 +65,8 @@ class Chart extends StatelessWidget {
               child: Text(
             "Total-> ₹$TotalExpense",
             style: const TextStyle(
-              fontSize: 18,
-                color: Colors.black,
+              fontSize: 16,
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 decoration: TextDecoration.underline,
                 decorationStyle: TextDecorationStyle.dotted,),
@@ -94,15 +93,16 @@ class Chart extends StatelessWidget {
                   (bucket) => Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: Icon(
-                        CategoryIcon[bucket.category],
-                        color: isDarkMode
-                            ? Colors.black
-                            : Theme.of(context)
-                                .colorScheme
-                                .primary
-                                .withOpacity(0.7),
-                      ),
+                      child:categories[bucket.category.title]!.icon,
+                      // Icon(_groceryItem[index].category.color
+                      //   CategoryIcon[bucket.category.icon.icon],
+                      //   color: isDarkMode
+                      //       ? Colors.black
+                      //       : Theme.of(context)
+                      //           .colorScheme
+                      //           .primary
+                      //           .withOpacity(0.7),
+                      // ),
                     ),
                   ),
                 )
