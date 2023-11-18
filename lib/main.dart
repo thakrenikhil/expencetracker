@@ -15,6 +15,7 @@ var kDarkColorScheme = ColorScheme.fromSeed(
 );
 final nameProvider = StateProvider((ref) => '');
 final emailProvider = StateProvider((ref) => '');
+final expensesProvider = StateProvider((ref) => '');
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();

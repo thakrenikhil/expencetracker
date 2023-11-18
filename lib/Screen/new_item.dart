@@ -22,7 +22,7 @@ class _NewExpenceState extends State<NewExpence> {
     return formatter.format(_selecteddate!);
   }
   final _expencecontroller = TextEditingController();
-  final _commentcontroller = TextEditingController();
+  final _commentcontroller = TextEditingController(text: '');
   final _amountcontroller = TextEditingController();
   DateTime? _selecteddate;
   _DatePicker() async {
@@ -74,7 +74,7 @@ class _NewExpenceState extends State<NewExpence> {
           'amount': enteredAmount,
           'category': _selectedcategory.caption,
           'date': formattedDate,
-          'comment': _commentcontroller.text,
+          'comment': _commentcontroller.text ?? 'Null',
         }));
     final Map<String, dynamic> resData = json.decode(response.body);
     if (!context.mounted) {
@@ -85,8 +85,8 @@ class _NewExpenceState extends State<NewExpence> {
         amount: enteredAmount,
         date: _selecteddate!,
         title: _expencecontroller.text,
-        category: _selectedCategory,
-    comment: _commentcontroller.text));
+        category: _selectedCategory ,
+    comment: _commentcontroller.text ));
      Navigator.pop(context);
   }
 
@@ -214,6 +214,7 @@ class _NewExpenceState extends State<NewExpence> {
               style: const TextStyle(color: Colors.white, fontFamily: 'outfit'),
               controller: _commentcontroller,
               maxLength: 20,
+             // initialValue: '',
               decoration: const InputDecoration(label: Text('Add Comment')),
             ),
             const Spacer(),

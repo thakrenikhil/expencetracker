@@ -13,8 +13,6 @@ class AuthScreen extends ConsumerStatefulWidget {
 }
 
 class _AuthScreenState extends ConsumerState<AuthScreen> {
-
-
   final _formkey = GlobalKey<FormState>();
   // final _emailcontroller = TextEditingController();
   // final _passwordcontroller = TextEditingController();
@@ -23,251 +21,298 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   String email = '';
   String password = '';
   String username = '';
+  var _isSending = false;
 
-
-
-  usernameGet(String value, WidgetRef ref){
+  usernameGet(String value, WidgetRef ref) {
     ref.read(nameProvider.notifier).update((state) => value);
   }
-  emailGet(String value, WidgetRef ref){
+
+  emailGet(String value, WidgetRef ref) {
     ref.read(emailProvider.notifier).update((state) => value);
   }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Form(
-          key: _formkey,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 100,
+    var maincontent = Container(
+      child: Form(
+        key: _formkey,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 100,
+              ),
+              const Text(
+                'Expense Tracker',
+                style: TextStyle(
+                  fontFamily: 'outfit',
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 28,
                 ),
-                const Text(
-                  'Expense Tracker',
-                  style: TextStyle(
-                    fontFamily: 'outfit',
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 28,
-                  ),
-                ),
-                //Image.asset("assets/images/logo.png" ),
-                const SizedBox(
-                  height: 100,
-                ),!islogin?
-                SizedBox(
-                  height: 45,
-                  width: 315,
-                  child: TextFormField(
-                   // controller:  _usernamecontroller,
-                    key: const ValueKey('username'),
-                    validator: (value){
-                      if(value.toString().length<3){
-                        return 'username to small';
-                      }else {
-                        return null;
-                      }
-                    },
-                    //onFieldSubmitted: (value) => onSubmit(value, ref),
-                    onSaved: (value){
-                      setState(() {
-                        username = value!;
-                      });
-                      return usernameGet(username, ref);
-                    },
-
-                    textAlign: TextAlign.justify,
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.next,
-                    cursorColor: Colors.cyan,
-                    decoration: const InputDecoration(
-                        filled: false,
-                        isDense: true,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(14)),
-                            borderSide: BorderSide(color: Colors.cyan)),
-                        hintText: "UserName",
-                        hintStyle: TextStyle(fontFamily: 'outfit')),
-                  ),
-                ):
-                const SizedBox(
-                  height: 10,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  height: 45,
-                  width: 315,
-                  child: TextFormField(
-                    key: const ValueKey('email'),
-                    validator: (value){
-                      if(!(value.toString().contains('@'))){
-                        return 'Enter valid Email';
-                      }else {
-                        return null;
-                      }
-                    },
-                    onSaved: (value){
-                      setState(() {
-                        email = value!;
-                        emailGet(email, ref);
-                      });
-                    },
-                    textAlign: TextAlign.justify,
-                    //controller: _emailcontroller,
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.next,
-                    cursorColor: Colors.cyan,
-                    decoration: const InputDecoration(
-                        filled: false,
-                        isDense: true,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(14)),
-                            borderSide: BorderSide(color: Colors.cyan)),
-                        hintText: "Email",
-                        hintStyle: TextStyle(fontFamily: 'outfit')),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  height: 45,
-                  width: 315,
-                  child: TextFormField(
-                    key: const ValueKey('password'),
-                    validator: (value){
-                      if(value.toString().length<5){
-                        return 'password to small';
-                      }else {
-                        return null;
-                      }
-                    },
-                    onSaved: (value){
-                      setState(() {
-                        password = value!;
-                      });
-                    },
-                    textAlign: TextAlign.justify,
-                    // controller: _passwordcontroller,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                        filled: false,
-                        isDense: true,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(14)),
-                            borderSide: BorderSide(color: Colors.cyan)),
-                        hintText: "Password",
-                        hintStyle: TextStyle(fontFamily: 'outfit')),
-                  ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                SizedBox(
-                  height: 55,
-                  width: 335,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: OutlinedButton(
-                        onPressed: () {
-                          if(_formkey.currentState!.validate()){
-                            _formkey.currentState!.save();
-                            islogin?SignIn(email,password): Signup(email, password);
-
+              ),
+              //Image.asset("assets/images/logo.png" ),
+              const SizedBox(
+                height: 100,
+              ),
+              !islogin
+                  ? SizedBox(
+                      height: 45,
+                      width: 315,
+                      child: TextFormField(
+                        // controller:  _usernamecontroller,
+                        key: const ValueKey('username'),
+                        validator: (value) {
+                          if (value.toString().length < 3) {
+                            return 'username to small';
+                          } else {
+                            return null;
                           }
-
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) => const Expenses(),
-                          //     ));
                         },
-                        style: OutlinedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            shape: const RoundedRectangleBorder(
+                        //onFieldSubmitted: (value) => onSubmit(value, ref),
+                        onSaved: (value) {
+                          setState(() {
+                            username = value!;
+                          });
+                          return usernameGet(username, ref);
+                        },
+
+                        textAlign: TextAlign.justify,
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next,
+                        cursorColor: Colors.cyan,
+
+                        decoration: const InputDecoration(
+                            filled: true,
+                            isDense: true,
+                            icon: Icon(FontAwesomeIcons.user),
+                            border: OutlineInputBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(14)))),
-                        child: !islogin
-                            ? const Text(
-                                "SignUp",
-                                style: TextStyle(
-                                  fontFamily: 'outfit',
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  //fontSize: 15
-                                ),
-                              )
-                            : const Text("LOGIN",
-                                style: TextStyle(
-                                  fontFamily: 'outfit',
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ))),
-                  ),
+                                    BorderRadius.all(Radius.circular(14)),
+                                borderSide: BorderSide(color: Colors.cyan)),
+                            hintText: "UserName",
+                            hoverColor: Colors.white,
+                            hintStyle: TextStyle(
+                                fontFamily: 'outfit', color: Colors.white)),
+                      ),
+                    )
+                  : const SizedBox(
+                      height: 10,
+                    ),
+              const SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                height: 45,
+                width: 315,
+                child: TextFormField(
+                  key: const ValueKey('email'),
+                  validator: (value) {
+                    if (!(value.toString().contains('@'))) {
+                      return 'Enter valid Email';
+                    } else {
+                      return null;
+                    }
+                  },
+                  onSaved: (value) {
+                    setState(() {
+                      email = value!;
+                      emailGet(email, ref);
+                    });
+                  },
+                  textAlign: TextAlign.justify,
+                  //controller: _emailcontroller,
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
+                  cursorColor: Colors.cyan,
+                  decoration: const InputDecoration(
+                      filled: true,
+                      icon: Icon(Icons.email_outlined),
+                      isCollapsed: false,
+                      isDense: true,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(14)),
+                          borderSide: BorderSide(color: Colors.cyan)),
+                      hintText: "Email",
+                      hintStyle:
+                          TextStyle(fontFamily: 'outfit', color: Colors.white)),
                 ),
-                TextButton(
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                height: 45,
+                width: 315,
+                child: TextFormField(
+                  key: const ValueKey('password'),
+                  validator: (value) {
+                    if (value.toString().length < 5) {
+                      return 'password to small';
+                    } else {
+                      return null;
+                    }
+                  },
+                  onSaved: (value) {
+                    setState(() {
+                      password = value!;
+                    });
+                  },
+                  textAlign: TextAlign.justify,
+                  // controller: _passwordcontroller,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                      filled: true,
+                      isDense: true,
+                      icon: Icon(Icons.password),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(14)),
+                          borderSide: BorderSide(color: Colors.cyan)),
+                      hintText: "Password",
+                      hintStyle:
+                          TextStyle(fontFamily: 'outfit', color: Colors.white)),
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              SizedBox(
+                height: 65,
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: OutlinedButton(
                     onPressed: () {
+                      if (_formkey.currentState!.validate()) {
+                        _formkey.currentState!.save();
+                        islogin
+                            ? SignIn(email, password)
+                            : Signup(email, password);
+                      }
                       setState(() {
-                        islogin = !islogin;
+                        _isSending = true;
                       });
                     },
-                    child: islogin? const Text(
-                      "Don't have an account?",
-                      style: TextStyle(color: Colors.blue),
-                    ):const Text(
-                      "Have an account?",
-                      style: TextStyle(color: Colors.blue),
-                    )
-
+                    style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(14)))),
+                    child: !islogin
+                        ? const Text(
+                            "SignUp",
+                            style: TextStyle(
+                              fontFamily: 'outfit',
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              //fontSize: 15
+                            ),
+                          )
+                        : const Text("LOGIN",
+                            style: TextStyle(
+                              fontFamily: 'outfit',
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            )),
+                  ),
                 ),
-                const Divider(
-                  color: Colors.white60,
-                  height: 10,
-                  indent: 12,
-                  endIndent: 12,
-                ),
-                SizedBox(
-                  height: 65,
-                  width: 350,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: OutlinedButton.icon(
-                      onPressed: () {},
-                      style: OutlinedButton.styleFrom(
-                          backgroundColor: const Color(0xFFE43434),
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8)))),
-                      icon: FaIcon(
-                        FontAwesomeIcons.googlePlusG,
-                        size: 22,
-                        color: Theme.of(context).colorScheme.onBackground,
-                      ),
-                      label: const Text(
-                        "Google",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
+              ),
+              TextButton(
+                  onPressed: () {
+                    setState(() {
+                      islogin = !islogin;
+                    });
+                  },
+                  child: islogin
+                      ? const Text(
+                          "Don't have an account?",
+                          style: TextStyle(color: Colors.blue),
+                        )
+                      : const Text(
+                          "Have an account?",
+                          style: TextStyle(color: Colors.blue),
+                        )),
+              const Divider(
+                color: Colors.white60,
+                height: 10,
+                indent: 22,
+                endIndent: 22,
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      height: 50,
+                      alignment: Alignment.center,
+                      width: 60,
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.elliptical(40, 40)),
+                          border: Border.all(color: Colors.white)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FaIcon(
+                          FontAwesomeIcons.googlePlusG,
+                          size: 32,
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Lottie.asset(
-                  "assets/images/f.json",
-                  reverse: true,
-                  repeat: true,
-                  height: 190,
-                )
-              ],
-            ),
+                  const SizedBox(
+                    width: 80,
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      height: 50,
+                      alignment: Alignment.center,
+                      width: 60,
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.elliptical(40, 40)),
+                          border: Border.all(color: Colors.white)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FaIcon(
+                          FontAwesomeIcons.facebookF,
+                          size: 32,
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Lottie.asset(
+                "assets/images/f.json",
+                reverse: true,
+                repeat: true,
+                height: 190,
+              )
+            ],
           ),
         ),
+      ),
+    );
+    if (_isSending) {
+      maincontent = Container(
+          alignment: Alignment.center,
+          child: const CircularProgressIndicator(
+            color: Colors.amber,
+            backgroundColor: Colors.white,
+          ));
+    }
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: maincontent,
       ),
     );
   }

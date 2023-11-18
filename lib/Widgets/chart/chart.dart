@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:expencetracker/Modals/expense.dart';
 import 'package:expencetracker/categories.dart';
 import 'package:flutter/material.dart';
@@ -52,8 +54,8 @@ class Chart extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         gradient: LinearGradient(
           colors: [
-            Theme.of(context).colorScheme.primary.withOpacity(0.5),
-            Theme.of(context).colorScheme.primary.withOpacity(0.5)
+            Colors.orangeAccent.withOpacity(1),
+            Colors.cyanAccent.withOpacity(1)
           ],
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
@@ -63,16 +65,16 @@ class Chart extends StatelessWidget {
         children: [
           Container(
               child: Text(
-            "Total-> ₹$TotalExpense",
+            "Total:  ₹$TotalExpense",
             style: const TextStyle(
               fontSize: 16,
-                color: Colors.white,
+                color: Colors.black,
                 fontWeight: FontWeight.bold,
                 decoration: TextDecoration.underline,
-                decorationStyle: TextDecorationStyle.dotted,),
+                 ),
             textAlign: TextAlign.center,
             softWrap: true,
-          ),),
+          ),),SizedBox(height: 4,),
           Expanded(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,

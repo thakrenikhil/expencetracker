@@ -1,15 +1,24 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../Modals/expense.dart';
 import 'package:expencetracker/Widgets/expences-items.dart';
 
-class ExpencesList extends StatelessWidget {
+import '../main.dart';
+
+class ExpencesList extends ConsumerWidget {
   const ExpencesList(
       {super.key, required this.expenses, required this.OnRemovedExpense});
   final List<Expense> expenses;
   final void Function(Expense expense) OnRemovedExpense;
+  // emailGet(Str? value, WidgetRef ref){
+  //   ref.read(expensesProvider.notifier).update((state) => expenses[index].id);
+  // }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
+
     return ListView.builder(
       itemCount: expenses.length,
       itemBuilder: (ctx, index) => Dismissible(
@@ -27,3 +36,6 @@ class ExpencesList extends StatelessWidget {
     );
   }
 }
+
+
+

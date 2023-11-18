@@ -27,14 +27,16 @@ final CategoryIcon = {
 };
 
 class Expense {
+
   Expense({
     required this.amount,
     required this.date,
     required this.title,
     required this.category,
-    required this.id, required String? comment,
+    required this.id, required this.comment,
   }) ;
   // : id = uuid.v4();
+  final String comment ;
   final String? id;
   final double? amount;
   final DateTime? date;

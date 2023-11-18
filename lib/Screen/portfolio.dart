@@ -358,3 +358,119 @@ class ExpenseRecord {
 
   ExpenseRecord({required this.month, required this.totalExpense});
 }
+
+// class ExpenseCard extends StatelessWidget {
+//   const ExpenseCard({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Card(color: Colors.black,
+//       // elevation: 5,
+//       margin: EdgeInsets.all(16),
+//       shape: RoundedRectangleBorder(
+//         borderRadius: BorderRadius.circular(15),
+//       ),
+//       child:  Padding(
+//         padding: EdgeInsets.all(16.0),
+//         child: Column(mainAxisAlignment: MainAxisAlignment.center,
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Text(
+//               'Title:',
+//               style: TextStyle(
+//                 fontWeight: FontWeight.normal,
+//                 color: Colors.grey[600],
+//                 fontSize: 12,
+//               ),
+//             ),Text(
+//             'RAPIDO',
+//             style: TextStyle(
+//                 fontSize: 36,
+//                 fontWeight: FontWeight.bold,
+//                 color: Colors.white
+//             ),
+//           ),
+//             SizedBox(height: 18,),
+//             Text(
+//               'Date:',
+//               style: TextStyle(
+//                 fontWeight: FontWeight.normal,
+//                 color: Colors.grey[600],
+//                 fontSize: 12,
+//               ),
+//             ),
+//             Text(
+//               'November 18, 2023',
+//               style: TextStyle(
+//                 fontWeight: FontWeight.bold,
+//                 color: Colors.white,
+//                 fontSize: 24,
+//               ),
+//             ),
+//             SizedBox(height: 18),
+//             Text(
+//               'Category:',
+//               style: TextStyle(
+//                 fontWeight: FontWeight.normal,
+//                 color: Colors.grey[600],
+//                 fontSize: 12,
+//               ),
+//             ),
+//             Row(
+//               children: [
+//
+//                 Icon(
+//                   Icons.work_history,
+//                   color: Colors.white,
+//                   size: 24,
+//                 ),
+//                 SizedBox(width: 16),
+//                 Text(
+//                   'WORK',
+//                   style: TextStyle(
+//                     fontSize: 24,
+//                     fontWeight: FontWeight.bold,
+//                     color: Colors.white
+//                   ),
+//                 ),
+//               ],
+//             ),
+//             SizedBox(height: 16),
+//             Text(
+//               'Amount:',
+//               style: TextStyle(
+//                 fontWeight: FontWeight.normal,
+//                 color: Colors.grey[600],
+//                 fontSize: 12,
+//               ),
+//             ),
+//             Text(
+//               '\$100.00',
+//               style: TextStyle(
+//                 fontSize: 28,
+//                 fontWeight: FontWeight.bold,
+//                 color: Colors.white,
+//               ),
+//             ),SizedBox(height: 18,),
+//             Text(
+//               'Comments:',
+//               style: TextStyle(
+//                 fontWeight: FontWeight.normal,
+//                 color: Colors.grey[600],
+//                 fontSize: 12,
+//               ),
+//             ),
+//             Text(
+//               'College to home',
+//               style: TextStyle(
+//                 fontWeight: FontWeight.w400,
+//                 color: Colors.white,
+//                 fontSize: 18,
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
