@@ -1,10 +1,5 @@
-// ignore_for_file: unused_import
-
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../Modals/expense.dart';
-import '../Screen/portfolio.dart';
-import 'expences_list.dart';
 
 class ExpenceItem extends StatefulWidget {
   const ExpenceItem({
@@ -20,69 +15,59 @@ class ExpenceItem extends StatefulWidget {
 class _ExpenceItemState extends State<ExpenceItem> {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.grey[700],
-      child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    widget.expense.title!,
-                    style: Theme.of(context).textTheme.titleLarge,
-                    // style: TextStyle(color: Colors.black),
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ExpenseCard(Expense(
-                                  amount: widget.expense.amount!,
-                                  date: widget.expense.date,
-                                  title: widget.expense.title!,
-                                  category: widget.expense.category!,
-                                  id: widget.expense.id,
-                                  comment: widget.expense.comment))));
-                    },
-                    icon: const FaIcon(
-                      FontAwesomeIcons.circleInfo,
-                      size: 22,
-                      color: Colors.white,
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Row(
-                children: [
-                  Text(
-                    'Rs.${widget.expense.amount!.toStringAsFixed(1)}',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  const Spacer(),
-                  Row(
-                    children: [
-                      widget.expense.category?.icon ??
-                          Container(
-                            color: Colors.cyanAccent,
-                          ),
-                      //  Icon(categories[widget.expense.category]!.icon as IconData?),
-                      const SizedBox(
-                        width: 16,
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ExpenseCard(Expense(
+                    amount: widget.expense.amount!,
+                    date: widget.expense.date,
+                    title: widget.expense.title!,
+                    category: widget.expense.category!,
+                    id: widget.expense.id,
+                    comment: widget.expense.comment))));
+      },
+      child: Card(
+        borderOnForeground: true,
+        color: Colors.grey[850],
+        child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        widget.expense.title!,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              overflow: TextOverflow.visible,
+                            ),
                       ),
-                      Text(widget.expense.formatteddate)
-                    ],
-                  )
-                ],
-              )
-            ],
-          )),
+                    ),
+                    const Spacer(),
+                  ],
+                ),
+                const Spacer(),
+                Row(
+                  children: [
+                    Text(
+                      'Rs.${widget.expense.amount!.toStringAsFixed(0)}',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                Row(
+                  children: [
+                    Text(widget.expense.formatteddate,
+                        style: const TextStyle(fontSize: 12)),
+                  ],
+                )
+              ],
+            )),
+      ),
     );
   }
 }
@@ -200,13 +185,29 @@ class _ExpenseCardState extends State<ExpenseCard> {
               ),
             ),
             Text(
-              widget.expense.comment!,
+              widget.expense.comment,
               style: const TextStyle(
                 fontWeight: FontWeight.w400,
                 color: Colors.white,
                 fontSize: 18,
               ),
             ),
+            const SizedBox(
+              height: 45,
+            ),
+            // InkWell(onTap: (){
+            //
+            // },
+            //   enableFeedback:true ,borderRadius: BorderRadius.circular(8),highlightColor: Colors.white,
+            //   child: const Row(crossAxisAlignment: CrossAxisAlignment.center,
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       FaIcon(FontAwesomeIcons.trash,color: Colors.redAccent,),
+            //       SizedBox(width: 8,),
+            //       Text('Delete Expense')
+            //     ],
+            //   ),
+            // )
           ],
         ),
       ),

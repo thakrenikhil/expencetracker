@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
@@ -8,35 +10,45 @@ final formatter = DateFormat.yMd();
 
 const uuid = Uuid();
 
-enum Category { food, travel, work, leisure }
-class Categories{
-   Categories( {required this.title, required this.icon, required this.caption, });
+enum Category {
+  Food,
+  Travel,
+  Work,
+  Leisure,
+  Transfer
+}
+
+class Categories {
+  Categories({
+    required this.title,
+    required this.icon,
+    required this.caption,
+  });
   final Category title;
-  final Icon ?icon;
-   final String caption;
-
-
-
+  final Icon? icon;
+  final String caption;
 }
 
 final CategoryIcon = {
-  Category.food: Icons.lunch_dining_sharp,
-  Category.work: Icons.work_history,
-  Category.leisure: Icons.movie_filter_outlined,
-  Category.travel: Icons.flight,
+  Category.Food: Icons.lunch_dining_sharp,
+  Category.Work: Icons.work_history,
+  Category.Leisure: Icons.movie_filter_outlined,
+  Category.Travel: Icons.flight,
+  Category.Transfer: Icons.compare_arrows,
+
 };
 
 class Expense {
-
   Expense({
     required this.amount,
     required this.date,
     required this.title,
     required this.category,
-    required this.id, required this.comment,
-  }) ;
+    required this.id,
+    required this.comment,
+  });
   // : id = uuid.v4();
-  final String comment ;
+  final String comment;
   final String? id;
   final double? amount;
   final DateTime? date;
@@ -54,7 +66,7 @@ class ExpenseBucket {
   final List<Expense> expenses;
   ExpenseBucket.forCategory(List<Expense> allExpenses, this.category)
       : expenses = allExpenses
-            .where((expense) => expense.category== category)
+            .where((expense) => expense.category == category)
             .toList();
 
   double get totalExpenses {

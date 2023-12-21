@@ -43,6 +43,7 @@ class _ExpensesState extends State<Expenses> {
   void _addExpence(Expense expense) {
     setState(() {
       _registeredexpences.add(expense);
+      loadItem();
     });
 
   }

@@ -17,9 +17,8 @@ class ExpencesList extends ConsumerWidget {
   // }
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
-
-    return ListView.builder(
+  Widget build(BuildContext context, WidgetRef ref) {
+    return GridView.builder(
       itemCount: expenses.length,
       itemBuilder: (ctx, index) => Dismissible(
           direction: DismissDirection.startToEnd,
@@ -33,9 +32,9 @@ class ExpencesList extends ConsumerWidget {
           },
           key: ValueKey(expenses[index].id),
           child: ExpenceItem(expense: expenses[index])),
+      gridDelegate:
+          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3,
+          crossAxisSpacing: 0),
     );
   }
 }
-
-
-

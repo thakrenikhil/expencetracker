@@ -3,17 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:expencetracker/Modals/expense.dart';
 
 final categories = {
-  Category.food:  Categories(
-   title: Category.food,icon :const Icon(Icons.lunch_dining_sharp),caption: 'Food'
+  Category.Food:  Categories(
+   title: Category.Food,icon :const Icon(Icons.lunch_dining_sharp,color: Colors.white),caption: 'Food'
   ),
-  Category.leisure:  Categories(
-   title: Category.leisure,icon:const Icon(Icons.movie_filter_outlined),caption: 'leisure'
+  Category.Leisure:  Categories(
+   title: Category.Leisure,icon:const Icon(Icons.movie_filter_outlined,color: Colors.white),caption: 'leisure'
   ),
-  Category.travel:  Categories(
-   title: Category.travel,icon: const Icon(Icons.flight),caption: 'Travel'
+  Category.Travel:  Categories(
+   title: Category.Travel,icon: const Icon(Icons.flight,color: Colors.white),caption: 'Travel'
   ),
-  Category.work: Categories(
-    title: Category.work,icon: const Icon(Icons.work_history),caption: 'Work'
+  Category.Work: Categories(
+    title: Category.Work,icon: const Icon(Icons.work_history,color: Colors.white),caption: 'Work'
+  ),
+  Category.Transfer:  Categories(
+      title: Category.Transfer,icon :const Icon(Icons.compare_arrows,color: Colors.white),caption: 'Transfer'
   ),
 
 };

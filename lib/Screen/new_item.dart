@@ -17,14 +17,13 @@ class NewExpence extends StatefulWidget {
 class _NewExpenceState extends State<NewExpence> {
   var _isSending = false;
   final _formKey = GlobalKey<FormState>();
-  final _selectedCategory = categories[Category.work]!;
   get formattedDate{
     return formatter.format(_selecteddate!);
   }
   final _expencecontroller = TextEditingController();
   final _commentcontroller = TextEditingController(text: '');
   final _amountcontroller = TextEditingController();
-  DateTime? _selecteddate;
+  DateTime? _selecteddate = DateTime.now();
   _DatePicker() async {
     final now = DateTime.now();
     final firstdate = DateTime(now.year - 1, now.month, now.day);
@@ -39,7 +38,7 @@ class _NewExpenceState extends State<NewExpence> {
     });
   }
 
-  Categories _selectedcategory = categories[Category.work]!;
+  Categories _selectedcategory = categories[Category.Work]!;
   void _submitexpensedata() async {
     setState(() {
       _isSending = true;
@@ -74,7 +73,7 @@ class _NewExpenceState extends State<NewExpence> {
           'amount': enteredAmount,
           'category': _selectedcategory.caption,
           'date': formattedDate,
-          'comment': _commentcontroller.text ?? 'Null',
+          'comment': _commentcontroller.text,
         }));
     final Map<String, dynamic> resData = json.decode(response.body);
     if (!context.mounted) {
@@ -85,7 +84,7 @@ class _NewExpenceState extends State<NewExpence> {
         amount: enteredAmount,
         date: _selecteddate!,
         title: _expencecontroller.text,
-        category: _selectedCategory ,
+        category: _selectedcategory ,
     comment: _commentcontroller.text ));
      Navigator.pop(context);
   }
@@ -163,7 +162,7 @@ class _NewExpenceState extends State<NewExpence> {
             Row(
               children: [
                 Expanded(
-                  child: DropdownButtonFormField(
+                  child: DropdownButtonFormField(dropdownColor: Colors.black,
                       style: const TextStyle(
                           color: Colors.white, fontFamily: 'outfit'),
                       value: _selectedcategory,
@@ -181,9 +180,10 @@ class _NewExpenceState extends State<NewExpence> {
                                   child: category.value.icon,
                                 ),
                                 const SizedBox(
-                                  width: 6,
+                                  width: 16,
                                 ),
-                                Text(category.value.caption,style: const TextStyle(color: Colors.cyanAccent),)
+                                Text(category.value.caption,
+                                  style: const TextStyle(color: Colors.white),)
                               ],
                             ),
                           ),
@@ -213,7 +213,7 @@ class _NewExpenceState extends State<NewExpence> {
             TextFormField(
               style: const TextStyle(color: Colors.white, fontFamily: 'outfit'),
               controller: _commentcontroller,
-              maxLength: 20,
+              maxLength: 60,
              // initialValue: '',
               decoration: const InputDecoration(label: Text('Add Comment')),
             ),
